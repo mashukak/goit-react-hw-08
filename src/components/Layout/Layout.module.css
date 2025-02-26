@@ -1,0 +1,18 @@
+.nav {
+    display: flex;
+    gap: 20px;
+    background: #4caf50;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  
+  .navLink {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .navLink:hover {
+    text-decoration: underline;
+  }
+  

@@ -1,0 +1,76 @@
+.contactCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  margin: 0 auto;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.contactsList {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 4 колонки */
+  gap: 10px; /* Відстань між контактами */
+  padding: 20px;
+  width: 100%;
+  justify-items: center; /* Центруємо картки по сітці */
+}
+
+.contactItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  width: 180px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  
+  transition: background-color 0.3s;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contactItem:hover {
+  background-color: #e9e9e9;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.number {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+}
+
+.deleteButton {
+  margin-top: 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.deleteButton:hover {
+  background-color: #cc0000;
+}
+
+.noContacts {
+  text-align: center;
+  color: gray;
+  font-size: 14px;
+}
