@@ -118,7 +118,6 @@ const ContactsPage = () => {
         <p className={styles.noContacts}>No contacts found.</p>
       )}
 
-      {/* Діалогове вікно редагування */}
       <Dialog open={showEditModal} onClose={() => setShowEditModal(false)}>
         <DialogTitle>Edit Contact</DialogTitle>
         <DialogContent>
@@ -143,12 +142,11 @@ const ContactsPage = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Діалогове вікно видалення */}
       <Dialog
         open={showDeleteModal}
         onClose={() => {
           setShowDeleteModal(false);
-          setDeleteId(null); // Видаляємо ID після закриття
+          setDeleteId(null);
         }}
         aria-labelledby="delete-dialog-title"
       >
@@ -158,7 +156,7 @@ const ContactsPage = () => {
           <Button
             onClick={confirmDelete}
             color="error"
-            autoFocus // Переміщуємо фокус на цю кнопку
+            autoFocus
           >
             Yes
           </Button>
