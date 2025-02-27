@@ -1,7 +1,7 @@
 .form {
     flex-direction: column;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
   }
   .label {
     font-weight: bold;
@@ -24,7 +24,6 @@
   .appContainer {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
     font-family: Arial, sans-serif;
   }
   

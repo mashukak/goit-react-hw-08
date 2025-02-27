@@ -18,27 +18,26 @@ const RegistrationForm = () => {
     dispatch(register(values));
     resetForm();
   };
-  
 
   return (
     <Formik initialValues={{ name: '', email: '', password: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
       <Form className={styles.form}>
-        <label>
+        <label className={styles.label}>
           Name:
-          <Field type="text" name="name" />
+          <Field className={styles.input} type="text" name="name" />
           <ErrorMessage name="name" component="div" className={styles.error} />
         </label>
-        <label>
+        <label className={styles.label}>
           Email:
-          <Field type="email" name="email" />
+          <Field className={styles.input} type="email" name="email" />
           <ErrorMessage name="email" component="div" className={styles.error} />
         </label>
-        <label>
+        <label className={styles.label}>
           Password:
-          <Field type="password" name="password" />
+          <Field className={styles.input} type="password" name="password" />
           <ErrorMessage name="password" component="div" className={styles.error} />
         </label>
-        <button type="submit">Register</button>
+        <button className={styles.button} type="submit">Register</button>
       </Form>
     </Formik>
   );

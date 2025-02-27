@@ -8,7 +8,6 @@ const ContactList = () => {
   const contacts = useSelector(selectFilteredContacts);
   const dispatch = useDispatch();
 
-  // Виводимо contacts у консоль
   console.log("Contacts:", contacts);
 
   const handleDelete = (id) => {

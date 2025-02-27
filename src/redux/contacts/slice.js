@@ -1,8 +1,9 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
-import { fetchContacts, addContact, deleteContact } from "./operations";
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchContacts, addContact, deleteContact, updateContact } from "./operations";
 
 const initialState = {
   items: [],
+  filter: "",
   loading: false,
   error: null,
 };
@@ -10,6 +11,11 @@ const initialState = {
 const contactsSlice = createSlice({
   name: "contacts",
   initialState,
+  reducers: {
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchContacts.pending, (state) => {
@@ -24,34 +30,29 @@ const contactsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(addContact.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(addContact.fulfilled, (state, action) => {
-        state.loading = false;
         state.items.push(action.payload);
       })
-      .addCase(addContact.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(deleteContact.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(deleteContact.fulfilled, (state, action) => {
-        state.loading = false;
         state.items = state.items.filter((contact) => contact.id !== action.payload);
       })
-      .addCase(deleteContact.rejected, (state, action) => {
+      .addCase(updateContact.fulfilled, (state, action) => {
+        const index = state.items.findIndex((contact) => contact.id === action.payload.id);
+        if (index !== -1) state.items[index] = action.payload;
+      })
+      .addMatcher((action) => action.type.endsWith("/pending"), (state) => {
+        state.loading = true;
+      })
+      .addMatcher((action) => action.type.endsWith("/rejected"), (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
+export const { setFilter } = contactsSlice.actions;
 export default contactsSlice.reducer;
-
-// Селектори
 export const selectContacts = (state) => state.contacts.items;
+export const selectFilter = (state) => state.contacts.filter;
 export const selectLoading = (state) => state.contacts.loading;
 export const selectError = (state) => state.contacts.error;

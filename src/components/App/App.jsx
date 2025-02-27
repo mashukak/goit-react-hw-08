@@ -7,22 +7,21 @@ import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
 import RestrictedRoute from '../../components/RestrictedRoute/RestrictedRoute';
 import Layout from '../../components/Layout/Layout';
 import Loader from '../../components/Loader/Loader';
-import styles from './App.module.css';
 
 const HomePage = lazy(() => import('../../pages/HomePage/HomePage'));
 const LoginPage = lazy(() => import('../../pages/LoginPage/LoginPage'));
 const RegistrationPage = lazy(() => import('../../pages/RegistrationPage/RegistrationPage'));
 const ContactsPage = lazy(() => import('../../pages/ContactsPage/ContactsPage'));
 
-const App = () => { 
+const App = () => {
   const dispatch = useDispatch();
   const isRefreshing = useSelector(selectIsRefreshing);
 
   useEffect(() => {
-    dispatch(refreshUser());
+    dispatch(refreshUser()); 
   }, [dispatch]);
 
-  return isRefreshing ? (  
+  return isRefreshing ? (
     <Loader />
   ) : (
     <Suspense fallback={<Loader />}>
@@ -45,6 +44,7 @@ const App = () => {
       </Routes>
     </Suspense>
   );
-};  
+};
 
 export default App;
+

@@ -1,0 +1,27 @@
+.homeContainer {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  .welcomeMessage {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .getStartedButton {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #35acd3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .getStartedButton:hover {
+    background-color: #246d86;
+  }
+  

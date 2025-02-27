@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #92c3f7;
+  box-shadow: 0 4px 10px rgba(44, 126, 171, 0.1);
+}
+
+.navContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.authContainer {
+  display: flex;
+  gap: 15px;
+}
+
+.authContainer a,
+.navContainer a {
+  color: white;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+.authContainer a:hover,
+.navContainer a:hover {
+  text-decoration: none;
+  background-color: #1a528f;
+}
+
+.logoutButton {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logoutButton:hover {
+  background-color: #cc0000;
+}
