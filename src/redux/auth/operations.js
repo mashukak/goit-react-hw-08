@@ -8,13 +8,11 @@ const setAuthHeader = (token) => {
   localStorage.setItem('token', token); 
 };
 
-// ✅ Функція для очищення токена
 const clearAuthHeader = () => {
   axios.defaults.headers.common.Authorization = '';
   localStorage.removeItem('token'); 
 };
 
-// 🔹 Логін
 export const login = createAsyncThunk('auth/login', async (credentials, thunkAPI) => {
   try {
     const { data } = await axios.post('/users/login', credentials);
@@ -25,7 +23,6 @@ export const login = createAsyncThunk('auth/login', async (credentials, thunkAPI
   }
 });
 
-// 🔹 Логаут
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     await axios.post('/users/logout');

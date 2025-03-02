@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const filtersSlice = createSlice({
-  name: "filters",
-  initialState: { filter: "" },
+const initialState = {
+  filter: "",
+};
+
+const filterSlice = createSlice({
+  name: "filter",
+  initialState,
   reducers: {
     setFilter: (state, action) => {
       state.filter = action.payload;
@@ -10,8 +14,5 @@ const filtersSlice = createSlice({
   },
 });
 
-export const { setFilter } = filtersSlice.actions;
-export default filtersSlice.reducer;
-
-// ✅ Додано селектор
-export const selectFilter = (state) => state.filters.filter;
+export const { setFilter } = filterSlice.actions;
+export default filterSlice.reducer;

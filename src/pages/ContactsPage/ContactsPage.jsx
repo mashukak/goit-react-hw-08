@@ -8,7 +8,7 @@ import styles from "./ContactsPage.module.css";
 
 const ContactsPage = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
+  const contacts = useSelector(selectContacts) || [];
   const filter = useSelector(selectFilter) || "";
 
   const [deleteId, setDeleteId] = useState(null);
@@ -42,10 +42,13 @@ const ContactsPage = () => {
   };
 
   const handleEditChange = (e) => {
-    setEditContact({ ...editContact, [e.target.name]: e.target.value });
+    if (editContact) {
+      setEditContact({ ...editContact, [e.target.name]: e.target.value });
+    }
   };
 
   const handleEditSubmit = async () => {
+    if (!editContact) return;
     try {
       await dispatch(updateContact(editContact)).unwrap();
       toast.success("Contact updated successfully!");
@@ -61,7 +64,10 @@ const ContactsPage = () => {
     const name = form.elements.name.value.trim();
     const number = form.elements.number.value.trim();
 
-    if (!name || !number) return;
+    if (!name || !number) {
+      toast.error("Please fill in all fields!");
+      return;
+    }
 
     try {
       await dispatch(addContact({ name, number })).unwrap();
@@ -74,7 +80,7 @@ const ContactsPage = () => {
   };
 
   const handleFilterChange = (e) => {
-    dispatch(setFilter(e.target.value));
+    dispatch(setFilter(e.target.value || ""));
   };
 
   const filteredContacts = contacts.filter(
@@ -117,7 +123,7 @@ const ContactsPage = () => {
       ) : (
         <p className={styles.noContacts}>No contacts found.</p>
       )}
-
+      
       <Dialog open={showEditModal} onClose={() => setShowEditModal(false)}>
         <DialogTitle>Edit Contact</DialogTitle>
         <DialogContent>
@@ -142,6 +148,7 @@ const ContactsPage = () => {
         </DialogActions>
       </Dialog>
 
+      {/* Delete Confirmation Modal */}
       <Dialog
         open={showDeleteModal}
         onClose={() => {

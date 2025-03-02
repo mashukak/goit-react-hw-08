@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchContacts, addContact, deleteContact, updateContact } from "./operations";
+import { logout } from "../auth/operations";
 
 const initialState = {
   items: [],
@@ -40,6 +41,12 @@ const contactsSlice = createSlice({
         const index = state.items.findIndex((contact) => contact.id === action.payload.id);
         if (index !== -1) state.items[index] = action.payload;
       })
+      .addCase(logout.fulfilled, (state) => {
+        state.items = [];
+        state.filter = "";
+        state.loading = false;
+        state.error = null;
+      })
       .addMatcher((action) => action.type.endsWith("/pending"), (state) => {
         state.loading = true;
       })
@@ -50,9 +57,8 @@ const contactsSlice = createSlice({
   },
 });
 
-export const { setFilter } = contactsSlice.actions;
-export default contactsSlice.reducer;
 export const selectContacts = (state) => state.contacts.items;
 export const selectFilter = (state) => state.contacts.filter;
-export const selectLoading = (state) => state.contacts.loading;
-export const selectError = (state) => state.contacts.error;
+
+export const { setFilter } = contactsSlice.actions;
+export default contactsSlice.reducer;
