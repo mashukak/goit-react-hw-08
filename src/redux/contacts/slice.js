@@ -1,34 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchContacts, addContact, deleteContact, updateContact } from "./operations";
-import { logout } from "../auth/operations";
-
-const initialState = {
-  items: [],
-  filter: "",
-  loading: false,
-  error: null,
-};
 
 const contactsSlice = createSlice({
   name: "contacts",
-  initialState,
-  reducers: {
-    setFilter: (state, action) => {
-      state.filter = action.payload;
-    },
+  initialState: {
+    items: [],
+    isLoading: false,
+    error: null,
   },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchContacts.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.isLoading = true;
       })
       .addCase(fetchContacts.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.items = action.payload;
       })
       .addCase(fetchContacts.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
       .addCase(addContact.fulfilled, (state, action) => {
@@ -38,27 +29,12 @@ const contactsSlice = createSlice({
         state.items = state.items.filter((contact) => contact.id !== action.payload);
       })
       .addCase(updateContact.fulfilled, (state, action) => {
-        const index = state.items.findIndex((contact) => contact.id === action.payload.id);
-        if (index !== -1) state.items[index] = action.payload;
-      })
-      .addCase(logout.fulfilled, (state) => {
-        state.items = [];
-        state.filter = "";
-        state.loading = false;
-        state.error = null;
-      })
-      .addMatcher((action) => action.type.endsWith("/pending"), (state) => {
-        state.loading = true;
-      })
-      .addMatcher((action) => action.type.endsWith("/rejected"), (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.items = state.items.map((contact) =>
+          contact.id === action.payload.id ? action.payload : contact
+        );
       });
   },
 });
 
+export const contactsReducer = contactsSlice.reducer;
 export const selectContacts = (state) => state.contacts.items;
-export const selectFilter = (state) => state.contacts.filter;
-
-export const { setFilter } = contactsSlice.actions;
-export default contactsSlice.reducer;

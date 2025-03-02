@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContacts, deleteContact, addContact, updateContact } from "../../redux/contacts/operations";
-import { selectContacts, selectFilter, setFilter } from "../../redux/contacts/slice";
+import { selectContacts } from "../../redux/contacts/selectors";  
+import { selectFilter } from "../../redux/filters/selectors";
+import { setFilter } from "../../redux/filters/slice";
 import toast, { Toaster } from "react-hot-toast";
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import styles from "./ContactsPage.module.css";
@@ -39,12 +41,6 @@ const ContactsPage = () => {
   const handleEdit = (contact) => {
     setEditContact(contact);
     setShowEditModal(true);
-  };
-
-  const handleEditChange = (e) => {
-    if (editContact) {
-      setEditContact({ ...editContact, [e.target.name]: e.target.value });
-    }
   };
 
   const handleEditSubmit = async () => {
@@ -93,82 +89,68 @@ const ContactsPage = () => {
     <div className={styles.contactsContainer}>
       <Toaster position="top-right" />
       <h1 className={styles.title}>Contacts</h1>
-
       <form onSubmit={handleAddContact} className={styles.addContactForm}>
         <TextField label="Name" name="name" variant="outlined" fullWidth required />
         <TextField label="Phone Number" name="number" variant="outlined" fullWidth required />
         <Button type="submit" variant="contained" color="primary">Add Contact</Button>
       </form>
-
       <TextField
         label="Search by name or number..."
         variant="outlined"
         fullWidth
         value={filter}
         onChange={handleFilterChange}
-        className={styles.searchInput}
       />
-
       {filteredContacts.length > 0 ? (
         <ul className={styles.contactsList}>
           {filteredContacts.map((contact) => (
             <li key={contact.id} className={styles.contactItem}>
-              <span className={styles.name}>{contact.name}</span>
-              <span className={styles.number}>{contact.number}</span>
-              <Button variant="contained" color="secondary" onClick={() => handleEdit(contact)}>Edit</Button>
-              <Button variant="contained" color="error" onClick={() => handleDelete(contact.id)}>Delete</Button>
+              <span>{contact.name}: {contact.number}</span>
+              <Button variant="contained" color="secondary" onClick={() => handleEdit(contact)}>
+                Edit
+              </Button>
+              <Button variant="contained" color="error" onClick={() => handleDelete(contact.id)}>
+                Delete
+              </Button>
             </li>
           ))}
         </ul>
       ) : (
-        <p className={styles.noContacts}>No contacts found.</p>
+        <p className={styles.noContactsMessage}>Контакти не знайдено</p>
       )}
-      
-      <Dialog open={showEditModal} onClose={() => setShowEditModal(false)}>
-        <DialogTitle>Edit Contact</DialogTitle>
+      <Dialog open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+        <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
-          <TextField
-            label="Name"
-            name="name"
-            value={editContact?.name || ""}
-            onChange={handleEditChange}
-            fullWidth
-          />
-          <TextField
-            label="Phone Number"
-            name="number"
-            value={editContact?.number || ""}
-            onChange={handleEditChange}
-            fullWidth
-          />
+          Are you sure you want to delete this contact?
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowEditModal(false)}>Cancel</Button>
-          <Button onClick={handleEditSubmit} color="primary">Save</Button>
+          <Button onClick={() => setShowDeleteModal(false)} color="primary">Cancel</Button>
+          <Button onClick={confirmDelete} color="error">Delete</Button>
         </DialogActions>
       </Dialog>
-
-      {/* Delete Confirmation Modal */}
-      <Dialog
-        open={showDeleteModal}
-        onClose={() => {
-          setShowDeleteModal(false);
-          setDeleteId(null);
-        }}
-        aria-labelledby="delete-dialog-title"
-      >
-        <DialogTitle id="delete-dialog-title">Are you sure?</DialogTitle>
-        <DialogActions>
-          <Button onClick={() => setShowDeleteModal(false)}>No</Button>
-          <Button
-            onClick={confirmDelete}
-            color="error"
-            autoFocus
-          >
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {editContact && (
+        <Dialog open={showEditModal} onClose={() => setShowEditModal(false)}>
+          <DialogTitle>Edit Contact</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="Name"
+              fullWidth
+              value={editContact.name}
+              onChange={(e) => setEditContact({ ...editContact, name: e.target.value })}
+            />
+            <TextField
+              label="Phone Number"
+              fullWidth
+              value={editContact.number}
+              onChange={(e) => setEditContact({ ...editContact, number: e.target.value })}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setShowEditModal(false)} color="primary">Cancel</Button>
+            <Button onClick={handleEditSubmit} color="primary">Save</Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 };
